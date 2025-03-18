@@ -1,0 +1,24 @@
+version: "3.8"
+services:                 
+    backend-fastapi:
+        build:
+            context: ./app_fastapi
+            dockerfile: Dockerfile_fastapi
+        container_name: etf_fastapi 
+        image: img_fastapi_etf:v01 
+        environment:
+            TZ: Asia/Taipei                        
+        ports:
+            - "5008:80"            
+    frontend-plotly:
+        build:
+            context: ./app_plotly
+            dockerfile: Dockerfile_plotly
+        container_name: etf_plotly 
+        image: img_dash_plotly:v01 
+        environment:
+            TZ: Asia/Taipei 
+        ports:
+            - "8080:8050" 
+        depends_on:
+            - backend-fastapi                           

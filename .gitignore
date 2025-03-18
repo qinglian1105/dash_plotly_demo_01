@@ -1,0 +1,31 @@
+# Ignore Mac DS_Store files
+.DS_Store
+**/.DS_Store
+
+# Ignore folder_working
+folder_working/
+00_working/
+a_working_dir/
+
+
+# Ignore .env files
+*.env
+*.env.*
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Ignore pycache files
+__pycache__/
+**/__pycache__/
+
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Ignore folders of this project
+clean_docker.py
+/app_plotly/wait-for-it.sh
