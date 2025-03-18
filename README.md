@@ -45,7 +45,7 @@ __3. How programming works__ <br>
 
 The data visualization platform, namely interactive plot website, is built in three parts.<br>
 (1)Dash/Plotly is in charge of creating interactive plot. (Please refer to the folder  "[app_plotly](./app_plotly)")<br>
-(2)FastAPI gets data from the database, PostgreSQL, and then processes metrics, charts, and tables. (Please refer to the folder  "[app_fastapi](./app_plotly)")<br>
+(2)FastAPI gets data from the database, PostgreSQL, and then processes metrics, charts, and tables. (Please refer to the folder  "[app_fastapi](./app_fastapi)")<br>
 (3)The workflow of n8n, as just mentioned, operates periodically for crawling data from the website and saving data into database. The node "Gmail" in workflow will inform the results regardless of whether the workflow executed successfully or not.(Please refer to the similar project  [[n8n_py_js_demo_01](<https://github.com/qinglian1105/n8n_py_js_demo_01>)])<br>
 
 <br>
