@@ -5,6 +5,7 @@
 # Ignore folder_working
 folder_working/
 00_working/
+00_work_dir/
 a_working_dir/
 
 

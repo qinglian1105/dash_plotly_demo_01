@@ -4,7 +4,6 @@ import pandas as pd
 import api_database.sql_strings as sq
 import os
 import psycopg2
-import time
 
 
 ENV_PATH = os.path.join(os.getcwd())
@@ -30,10 +29,10 @@ def get_change(figure_t02, figure_t01):
     if figure_t01 == figure_t02:
         return "0%"
     elif figure_t02 < figure_t01:
-        change = f"▼ {round(abs(((figure_t02-figure_t01)/figure_t01)*100),2)}%"
+        change = f"▼ {round(abs(((figure_t02 - figure_t01) / figure_t01) * 100), 2)}%"
         return change
     else:
-        change = f"▲ {round(((figure_t02-figure_t01)/figure_t01)*100,2)}%"
+        change = f"▲ {round(((figure_t02 - figure_t01) / figure_t01) * 100, 2)}%"
         return change
 
 
@@ -115,7 +114,7 @@ def get_stock(holding_date):
         t01 = dss[1]["amount"]
         change = get_change(t02, t01)
         unit = 1000000
-        res = {"stock": f"{round(t02/unit,0):,.0f} (M)", "change": change}
+        res = {"stock": f"{round(t02 / unit, 0):,.0f} (M)", "change": change}
         return res
     except Exception as e:
         print(e)
@@ -170,7 +169,7 @@ def get_bond(holding_date):
         t01 = dss[1]["amount"]
         change = get_change(t02, t01)
         unit = 1000000
-        res = {"bond": f"{round(t02/unit,0):,.0f} (M)", "change": change}
+        res = {"bond": f"{round(t02 / unit, 0):,.0f} (M)", "change": change}
         return res
     except Exception as e:
         print(e)
@@ -198,7 +197,7 @@ def get_cash(holding_date):
         t01 = dss[1]["amount"]
         change = get_change(t02, t01)
         unit = 1000000
-        res = {"cash": f"{round(t02/unit,0):,.0f} (M)", "change": change}
+        res = {"cash": f"{round(t02 / unit, 0):,.0f} (M)", "change": change}
         return res
     except Exception as e:
         print(e)
@@ -280,7 +279,7 @@ def get_top_stocks_in_etfs(holding_date):
             ds["Security Code"] = row[0]
             ds["Security Name"] = row[1]
             ds["Industry Name"] = row[2]
-            ds["Market Value (M)"] = f"{round(row[3]/unit, 0):,.0f}"
+            ds["Market Value (M)"] = f"{round(row[3] / unit, 0):,.0f}"
             dss.append(ds)
 
         return dss
@@ -471,10 +470,10 @@ def get_change_results(figure_t02, figure_t01):
     if diff == 0:
         return f" {figure_t02}  (0, 0%)"
     elif diff < 0:
-        change = f" {closing}  ({diff}, ▼{round(abs(((figure_t02-figure_t01)/figure_t01)*100),2)}%)"
+        change = f" {closing}  ({diff}, ▼{round(abs(((figure_t02 - figure_t01) / figure_t01) * 100), 2)}%)"
         return change
     else:
-        change = f" {closing}  (+{diff}, ▲{round(((figure_t02-figure_t01)/figure_t01)*100,2)}%)"
+        change = f" {closing}  (+{diff}, ▲{round(((figure_t02 - figure_t01) / figure_t01) * 100, 2)}%)"
         return change
 
 
@@ -489,7 +488,7 @@ def chk_stock_in_db_latest(s_code):
             sql_str = sq.GET_LATEST_TWO_CLOSE_BY_SCODE.format(s_code)
             ds = pd.read_sql(sql_str, engine)
             if len(ds) < 2:
-                changes = f'{ds["s_close"][0]}, (New)'
+                changes = f"{ds['s_close'][0]}, (New)"
                 result = {
                     "holding_date": ds["holding_date"][0],
                     "s_code": s_code,
@@ -542,6 +541,75 @@ def get_eft_holding_with_selected_stock(s_code):
             }
         )
         return dss
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_top_percentage_of_etf(holding_date):
+    try:
+        conn = get_connection(HOST, DBNAME, USER, PASSWORD, PORT)
+        cursor = conn.cursor()
+        sql_str = sq.GET_TOP_PERCENTAGE_OF_ETF.format(holding_date)
+        cursor.execute(sql_str)
+        rows = cursor.fetchall()
+
+        etf_codes = []
+        s_codes = []
+        percentages = []
+        for row in rows:
+            etf_codes.append(row[0])
+            s_codes.append(row[1])
+            percentages.append(row[2])
+
+        res = {
+            "ETF": etf_codes,
+            "Stock": s_codes,
+            "Percentage(%)": percentages,
+        }
+
+        return res
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_top_stock_of_top_industry_of_etf(holding_date):
+    try:
+        conn = get_connection(HOST, DBNAME, USER, PASSWORD, PORT)
+        cursor = conn.cursor()
+        sql_str = sq.GET_TOP_STOCK_OF_TOP_INDUSTRY_OF_ETF.format(holding_date)
+        cursor.execute(sql_str)
+        rows = cursor.fetchall()
+
+        industry_names = []
+        s_codes = []
+        s_names = []
+        holdings = []
+        mvs = []
+        ranks = []
+        for row in rows:
+            industry_names.append(row[0])
+            s_codes.append(row[1])
+            s_names.append(row[2])
+            holdings.append(row[3])
+            mvs.append(round(row[4] / 1000000, 0))
+            ranks.append(row[5])
+
+        res = {
+            "industry_name": industry_names,
+            "s_code": s_codes,
+            "s_name": s_names,
+            "holding": holdings,
+            "mv": mvs,
+            "rank": ranks,
+        }
+
+        return res
     except Exception as e:
         print(e)
     finally:

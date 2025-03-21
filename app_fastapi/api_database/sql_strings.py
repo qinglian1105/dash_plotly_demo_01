@@ -502,3 +502,110 @@ FROM
 ORDER BY
    tb_02.holding_amount DESC;
 """
+
+GET_TOP_STOCK_OF_TOP_INDUSTRY_OF_ETF = """
+WITH tb_01 AS (
+    SELECT
+        s_code,
+        s_name,
+        industry_name
+    FROM
+        company_info
+),
+tb_02 AS (
+    SELECT
+        s_code,
+        s_close,
+        sum(holding_amount) AS holding,
+        sum(s_close * holding_amount) AS mv
+    FROM
+        top_etf_holding
+    WHERE
+        unit = '股'
+        AND holding_date IN ('{}')
+    GROUP BY
+        s_code,
+        s_close
+),
+tb_03 AS (
+    SELECT
+        tb_02.*,
+        tb_01.s_name,
+        tb_01.industry_name
+    FROM
+        tb_02
+        LEFT JOIN tb_01 ON tb_02.s_code = tb_01.s_code
+),
+tb_04 AS (
+    SELECT
+        tb_03.industry_name,
+        sum(tb_03.mv) AS mv_industry
+    FROM
+        tb_03
+    group by
+        tb_03.industry_name
+    ORDER BY
+        sum(tb_03.mv) DESC
+    LIMIT
+        10
+), tb_05 AS (
+    SELECT
+        tb_03.*
+    FROM
+        tb_03
+    WHERE
+        tb_03.industry_name IN (
+            SELECT
+                industry_name
+            FROM
+                tb_04
+        )
+),
+tb_06 AS (
+    SELECT
+        tb_05.*,
+        ROW_NUMBER() OVER (
+            PARTITION BY tb_05.industry_name
+            ORDER BY
+                tb_05.mv DESC
+        ) AS rank
+    FROM
+        tb_05
+)
+SELECT
+    tb_06.industry_name,
+    tb_06.s_code,
+    tb_06.s_name,
+    tb_06.holding,
+    tb_06.mv,
+    tb_06.rank
+FROM
+    tb_06
+WHERE
+    tb_06.rank < 11;
+"""
+
+GET_TOP_PERCENTAGE_OF_ETF = """
+WITH tb_01 AS (
+    SELECT
+        etf_code,
+        s_name,
+        ROUND(holding_percentage * 100, 2) AS percentage,
+        ROW_NUMBER() OVER (
+            PARTITION BY etf_code
+            ORDER BY
+                holding_percentage * 100 DESC
+        ) AS rank
+    FROM
+        top_etf_holding
+    WHERE
+        holding_date IN ('{}')
+        AND unit = '股'
+)
+SELECT
+    *
+FROM
+    tb_01
+WHERE
+    rank < 11;
+"""

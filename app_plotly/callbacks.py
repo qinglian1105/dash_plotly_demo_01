@@ -8,25 +8,15 @@ import layout as lyt
 def init_callbacks(app):
     @app.callback(
         [
-            Output("card-one-value", "children"),
-            Output("card-two-value", "children"),
-            Output("card-three-value", "children"),
-            Output("card-four-value", "children"),
-            Output("card-one-change", "children"),
-            Output("card-two-change", "children"),
-            Output("card-three-change", "children"),
-            Output("card-four-change", "children"),
+            Output("overivew-metrics", "children"),
             Output("pie-chart", "figure"),
             Output("bar-chart", "figure"),
             Output("tb-stocks-in-etfs", "data"),
         ],
         [Input("date-picker", "date")],
     )
-    def update_tab_two(choose_date):
-        stock = apg.call_api("get_stock", choose_date)
-        stock_counts = apg.call_api("get_stock_counts", choose_date)
-        bond = apg.call_api("get_bond", choose_date)
-        cash = apg.call_api("get_cash", choose_date)
+    def update_tab_overview(choose_date):
+        overview_metrics = lyt.overview_metric_row(choose_date)
 
         industry = apg.call_api("get_stock_by_industry", choose_date)
         pie_figure = px.pie(
@@ -48,14 +38,7 @@ def init_callbacks(app):
         stocks_in_etfs = apg.call_api("get_top_stocks_in_etfs", choose_date)
 
         return (
-            stock["stock"],
-            stock_counts["stock_counts"],
-            bond["bond"],
-            cash["cash"],
-            stock["change"],
-            stock_counts["change"],
-            bond["change"],
-            cash["change"],
+            overview_metrics,
             pie_figure,
             bar_figure,
             stocks_in_etfs,
@@ -70,7 +53,7 @@ def init_callbacks(app):
         State("tb-stock-ranking", "data"),
         prevent_initial_call=True,
     )
-    def update_tab_three(n_clicks, dropdown_date, dropdown_etf, existing_data):
+    def update_tab_top_30_stocks(n_clicks, dropdown_date, dropdown_etf, existing_data):
         if dropdown_date is None or dropdown_etf is None:
             return "Please Select 'Date' and 'ETF code'...", existing_data
         else:
@@ -90,7 +73,7 @@ def init_callbacks(app):
         Output("line-etf-price", "figure"),
         Input("dropdown-etfs", "value"),
     )
-    def update_tab_four_etf_price(etf_code):
+    def update_tab_trend_etf_price(etf_code):
         ds = apg.call_api("get_etf_historical_close", etf_code)
         title = "The Price of ETF"
         xaxis = {"title": "Date", "type": "category"}
@@ -108,7 +91,7 @@ def init_callbacks(app):
         Input("input-categories", "value"),
         prevent_initial_call=True,
     )
-    def update_tab_four_search_etf_by_scode(input_scode):
+    def update_tab_trend_search_etf_by_scode(input_scode):
         results = apg.call_api("get_etf_code_by_scode", input_scode)
         return results
 
@@ -119,7 +102,7 @@ def init_callbacks(app):
         allow_duplicate=True,
         prevent_initial_call=True,
     )
-    def update_tab_four_holding_percentage_by_scode(input_scode, input_etf):
+    def update_tab_trend_holding_percentage_by_scode(input_scode, input_etf):
         results = apg.call_api(
             "get_holding_percentage_and_amount", input_scode, input_etf
         )
@@ -147,7 +130,7 @@ def init_callbacks(app):
         State("input-individual-stock", "value"),
         allow_duplicate=True,
     )
-    def update_tab_five_stock_info(n_clicks, input_scode):
+    def update_tab_individual_stocks(n_clicks, input_scode):
         if not n_clicks:
             return ("↑ Please enter the stock code and then summit.", "", "", "")
         else:
@@ -155,6 +138,16 @@ def init_callbacks(app):
             if ds is None:
                 return (f"Sorry, '{input_scode}' not in DB. Please retry.", "", "", "")
             else:
+                position = ds["s_close"].find("(")
+                price = ds["s_close"][0 : position - 1]
+                change = ds["s_close"][position + 1 : -1]
+                if "▲" in ds["s_close"]:
+                    sign_color = "#ff3300"
+                elif "▼" in ds["s_close"]:
+                    sign_color = "#009933"
+                else:
+                    sign_color = "#000000"
+
                 info = [
                     html.H6(
                         f"Trading Date: {ds['holding_date']}",
@@ -166,8 +159,16 @@ def init_callbacks(app):
                     html.H6(
                         f"Security Name: {ds['s_name']}", style={"textAlign": "left"}
                     ),
-                    html.H6(
-                        f"Closing Price: {ds['s_close']}", style={"textAlign": "left"}
+                    html.Div(
+                        [
+                            html.Span(
+                                f"Closing Price: {price} (", style={"font-weight": 500}
+                            ),
+                            html.Span(
+                                change, style={"color": sign_color, "font-weight": 500}
+                            ),
+                            html.Span(")", style={"font-weight": 500}),
+                        ]
                     ),
                     lyt.make_empty_line(1),
                 ]
@@ -179,3 +180,70 @@ def init_callbacks(app):
                     tb,
                     tooltip_body,
                 )
+
+    @app.callback(
+        Output("treemap-industry-leading", "figure"),
+        Input("dropdown-date-industry-leading", "value"),
+    )
+    def update_tab_industry_leading(selected_date):
+        ds = apg.call_api("get_top_stock_of_top_industry_of_etf", selected_date)
+        fig = px.treemap(
+            {
+                "Industry": ds["industry_name"],
+                "Stock": ds["s_name"],
+                "Market Value": ds["mv"],
+                "extra_01": ds["industry_name"],
+                "extra_02": ds["rank"],
+            },
+            path=["Industry", "Stock"],
+            values="Market Value",
+            hover_data=["extra_01", "extra_02"],
+        )
+
+        fig.update_traces(
+            hovertemplate="Name: %{label}<br>Industry: %{customdata[0]}<br>Rank: %{customdata[1]}<br>Marke Value: %{value} (百萬)<extra></extra>",
+            hoverlabel=dict(
+                bgcolor="white",
+                font_size=13,
+                font_family="Arial",
+                namelength=0,
+            ),
+        )
+        fig.update_layout(
+            title={
+                "text": f"Industry Leaders by Market Value -  {selected_date}",
+                "xanchor": "center",
+                "x": 0.5,
+            }
+        )
+
+        return fig
+
+    @app.callback(
+        Output("scatter-holding-of-etf", "figure"),
+        Input("dropdown-date-holding-of-etf", "value"),
+    )
+    def update_tab_holding_of_etf(selected_date):
+        ds = apg.call_api("get_top_percentage_of_etf", selected_date)
+        fig = px.scatter(
+            ds,
+            x="ETF",
+            y="Percentage(%)",
+            color="Stock",
+        )
+
+        fig.update_traces(marker=dict(size=10))
+        fig.update_layout(
+            title={
+                "text": f"Stock Holding Percentage of ETF ({selected_date})",
+                "xanchor": "center",
+                "x": 0.5,
+            },
+            scattermode="group",
+            xaxis_title="ETF code",
+            yaxis_title="Percentage (%)",
+            legend_title="Stock Name",
+            scattergap=0.3,
+        )
+
+        return fig

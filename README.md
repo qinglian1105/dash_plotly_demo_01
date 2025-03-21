@@ -19,12 +19,14 @@ Other: Selenium, Beautiful Soup, Docker, n8n <br>
 
 __1. The main components of this website__ <br>
 
-There are five tabs for this interactive plot website.<br>
+There are seven tabs for this interactive plot website.<br>
 (1)Introduction: just a brief description about this study.<br>
 (2)Overview: a dashboard with metrics, charts, and table.<br>
-(3)Top 30 Stocks: choose date and ETF code to view top 30 stocks of its portfolio.<br>
-(4)Trend: line charts for ETF historical prices and for stock holding amount and percentage of both selected ETF and stock code.<br>
-(5)Individual Stocks: show basic information and holding in ETFs of selected stock.<br>
+(3)Industry Leading: industry leaders in a treemap chart.<br>
+(4)Holding(%) of ETF: a scatter plot with top holding-percentage stocks<br>
+(5)Top 30 Stocks: choose date and ETF code to view top 30 stocks of its portfolio.<br>
+(6)Trend: line charts for ETF historical prices and for stock holding amount and percentage of both selected ETF and stock code.<br>
+(7)Individual Stocks: show basic information and holding in ETFs of selected stock.<br>
 <br>
 
 
@@ -56,7 +58,7 @@ __4. Results__ <br>
 
 (1)Introduction<br>
 
-![avatar](./README_png/png_intro.png)
+![avatar](./README_png/png_introduction.png)
 <br><br>
 
 (2)Overview: a date picker to choose date for metrics, charts and tables.<br>
@@ -64,24 +66,40 @@ __4. Results__ <br>
 ![avatar](./README_png/png_overview.png)
 <br><br>
 
-(3)Top 30 Stocks: as mentioned above.<br>
+(3)Industry Leading: a treemap chart indicates leaders of their industries by market value of top ETFs holding.<br>
 
-![avatar](./README_png/png_top30_stock.png)
+![avatar](./README_png/png_industry_leading.png)
 <br><br>
 
-(4)Trend: as mentioned above.<br>
+
+(4)Holding(%) of ETF: a scatter plot shows top holding of every ETF with percentage.<br>
+
+![avatar](./README_png/png_holding_of_etf.png)
+<br><br>
+
+In addition, you can click on a stock in the chart legend, such as 2330, to temporarily not display it on the chart, making other stocks clearly visible.<br>
+
+![avatar](./README_png/png_holding_of_etf_no_2330.png)
+<br><br>
+
+(5)Top 30 Stocks: as mentioned above.<br>
+
+![avatar](./README_png/png_top_30_stocks.png)
+<br><br>
+
+(6)Trend: as mentioned above.<br>
 
 ![avatar](./README_png/png_trend.png)
 <br><br>
 
-(5)Individual Stocks: show basic information and holding in ETFs after submmiting stock code in the box.<br>
+(7)Individual Stocks: show basic information and holding in ETFs after submmiting stock code in the box.<br>
 
-![avatar](./README_png/png_indiv_stock_01.png)
+![avatar](./README_png/png_individual_stocks.png)
 <br><br>
 
-Besides, "More information about 'stock code'..." has a tooltip for clicking links to view more statistics or advanced analysis of that stock.<br>
+Besides, "More information about 'stock code'..." has a tooltip for clicking links to view more statistics or advanced analysis of that stock on the internet.<br>
 
-![avatar](./README_png/png_indiv_stock_02.png)
+![avatar](./README_png/png_individual_stocks_tooltip.png)
 <br><br>
 
 __The above offers an interactive plot website or data visualization platform with Plotly/Dash, FastAPI and n8n for investment statistics.__ <br>

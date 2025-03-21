@@ -1,89 +1,98 @@
 import requests
-import time
 
 
 HOST = "http://host.docker.internal:5008"
 
 MAPS = {
     "get_unique_holding_date": {
-        "part_path": "tab01/get_unique_holding_date",
+        "part_path": "overview/get_unique_holding_date",
         "method": "get",
         "variables": [],
     },
     "get_unique_etf_code": {
-        "part_path": "tab01/get_unique_etf_code",
+        "part_path": "overview/get_unique_etf_code",
         "method": "get",
         "variables": [],
     },
     "get_stock": {
-        "part_path": "tab02/get_stock",
+        "part_path": "overview/get_stock",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_stock_counts": {
-        "part_path": "tab02/get_stock_counts",
+        "part_path": "overview/get_stock_counts",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_bond": {
-        "part_path": "tab02/get_bond",
+        "part_path": "overview/get_bond",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_cash": {
-        "part_path": "tab02/get_cash",
+        "part_path": "overview/get_cash",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_stock_by_industry": {
-        "part_path": "tab02/get_stock_by_industry",
+        "part_path": "overview/get_stock_by_industry",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_stock_by_etfs": {
-        "part_path": "tab02/get_stock_by_etfs",
+        "part_path": "overview/get_stock_by_etfs",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_top_stocks_in_etfs": {
-        "part_path": "tab02/get_top_stocks_in_etfs",
+        "part_path": "overview/get_top_stocks_in_etfs",
         "method": "post",
         "variables": ["holding_date"],
     },
     "get_unique_etf_code_string": {
-        "part_path": "tab03/get_unique_etf_code_string",
+        "part_path": "top_30_stocks/get_unique_etf_code_string",
         "method": "get",
         "variables": [],
     },
     "get_compare_top_stocks_in_etf": {
-        "part_path": "tab03/get_compare_top_stocks_in_etf",
+        "part_path": "top_30_stocks/get_compare_top_stocks_in_etf",
         "method": "post",
         "variables": ["holding_date", "etf_code"],
     },
     "get_etf_historical_close": {
-        "part_path": "tab04/get_etf_historical_close",
+        "part_path": "trend/get_etf_historical_close",
         "method": "post",
         "variables": ["etf_code"],
     },
     "get_etf_code_by_scode": {
-        "part_path": "tab04/get_etf_code_by_scode",
+        "part_path": "trend/get_etf_code_by_scode",
         "method": "post",
         "variables": ["s_code"],
     },
     "get_holding_percentage_and_amount": {
-        "part_path": "tab04/get_holding_percentage_and_amount",
+        "part_path": "trend/get_holding_percentage_and_amount",
         "method": "post",
         "variables": ["s_code", "etf_code"],
     },
     "chk_stock_in_db_latest": {
-        "part_path": "tab05/chk_stock_in_db_latest",
+        "part_path": "individual_stocks/chk_stock_in_db_latest",
         "method": "post",
         "variables": ["s_code"],
     },
     "get_eft_holding_with_selected_stock": {
-        "part_path": "tab05/get_eft_holding_with_selected_stock",
+        "part_path": "individual_stocks/get_eft_holding_with_selected_stock",
         "method": "post",
         "variables": ["s_code"],
+    },
+    "get_top_stock_of_top_industry_of_etf": {
+        "part_path": "industry_leading/get_top_stock_of_top_industry_of_etf",
+        "method": "post",
+        "variables": ["holding_date"],
+    },
+    "get_top_percentage_of_etf": {
+        "part_path": "holding_of_etf/get_top_percentage_of_etf",
+        "method": "post",
+        "variables": ["holding_date"],
     },
 }
 

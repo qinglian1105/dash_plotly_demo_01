@@ -2,7 +2,6 @@ from dash import dcc, html, dash_table
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import api_mapping as apg
-import datetime
 
 
 HOLDING_DATES = apg.call_api("get_unique_holding_date")
@@ -12,7 +11,7 @@ MARKDOWN_TEXT = "About more information of Taiwan ETFs, please refer to  \
                 [Yahoo Finance (Taiwan)](<https://tw.stock.yahoo.com/tw-etf/total-assets>)"
 
 
-def create_metric_card(card_id, title, value, change, color_class):
+def create_metric_card(title, value, change, color_class, sign_color):
     return dbc.Card(
         dbc.CardBody(
             [
@@ -27,12 +26,10 @@ def create_metric_card(card_id, title, value, change, color_class):
                                 html.H5(
                                     value,
                                     className="card-text fw-bold text-center",
-                                    id=f"card-{card_id}-value",
                                 ),
                                 html.H6(
                                     change,
-                                    className="card-title text-muted mb-1 text-center",
-                                    id=f"card-{card_id}-change",
+                                    style={"color": sign_color},
                                 ),
                             ],
                             className="col",
@@ -53,29 +50,39 @@ def overview_metric_row(choose_date):
     cash = apg.call_api("get_cash", choose_date)
     values = [stock["stock"], stock_counts["stock_counts"], bond["bond"], cash["cash"]]
     changes = [stock["change"], stock_counts["change"], bond["change"], cash["change"]]
-    card_ids = ["one", "two", "three", "four"]
+
+    sign_colors = []
+    for c in changes:
+        if "▲" in c:
+            color = "#ff3300"
+        elif "▼" in c:
+            color = "#009933"
+        else:
+            color = "#000000"
+        sign_colors.append(color)
+
     titles = [
         "Stock - Market Value",
         "Stocks - Counts",
         "Bonds - Amount",
         "Cash - Amount",
     ]
-    color_classs = ["primary", "success", "warning", "info"]
-    variables = zip(card_ids, titles, values, changes, color_classs)
+    color_classs = ["primary", "muted", "warning", "info"]
+    variables = zip(titles, values, changes, color_classs, sign_colors)
     cols = [
         dbc.Col(
             create_metric_card(
-                card_id=card_id,
                 title=title,
                 value=value,
                 change=change,
                 color_class=color_class,
+                sign_color=sign_color,
             ),
             width=3,
         )
-        for card_id, title, value, change, color_class in variables
+        for title, value, change, color_class, sign_color in variables
     ]
-    return dbc.Row(cols)
+    return [dbc.Row([make_empty_line(1)]), dbc.Row(cols)]
 
 
 def create_table_top_stocks(choose_date):
@@ -312,7 +319,7 @@ def create_tooltip_more_infomation(s_code=""):
     ]
 
 
-def content_tab_one():
+def tab_introduction():
     return [
         dbc.Container(
             [
@@ -343,11 +350,10 @@ def content_tab_one():
     ]
 
 
-def content_tab_two():
+def tab_overview():
     return [
         dbc.Container(
             [
-                # Part_01: date picker
                 dbc.Row(
                     [
                         dbc.Row([make_empty_line(1)]),
@@ -359,23 +365,17 @@ def content_tab_two():
                     ],
                     className="g-4 mb-4",
                 ),
-                # Part_02: metrics
                 dbc.Row(
-                    [
-                        dbc.Row([make_empty_line(1)]),
-                        overview_metric_row(INIT_DATE),
-                    ],
+                    overview_metric_row(INIT_DATE),
                     className="g-4 mb-4",
+                    id="overivew-metrics",
                 ),
-                # Part_03: charts
                 dbc.Row(
                     [
-                        # Pie
                         dbc.Col(
                             dcc.Graph(id="pie-chart"),
                             width=6,
                         ),
-                        # Bar
                         dbc.Col(
                             dcc.Graph(id="bar-chart"),
                             width=6,
@@ -383,7 +383,6 @@ def content_tab_two():
                     ],
                     className="mb-4",
                 ),
-                # Part_04: table
                 dbc.Row(
                     [
                         html.Div(
@@ -405,7 +404,7 @@ def content_tab_two():
     ]
 
 
-def content_tab_three():
+def tab_top_30_stocks():
     return [
         dbc.Container(
             [
@@ -484,7 +483,7 @@ def content_tab_three():
     ]
 
 
-def content_tab_four():
+def tab_trend():
     return [
         dbc.Container(
             [
@@ -563,7 +562,7 @@ def content_tab_four():
     ]
 
 
-def content_tab_five():
+def tab_individual_stocks():
     return [
         dbc.Container(
             [
@@ -620,13 +619,6 @@ def content_tab_five():
                 ),
                 dbc.Row(html.Hr()),
                 dbc.Row(
-                    [
-                        html.H6("Trading Date:", style={"textAlign": "left"}),
-                        html.H6("Security Code:", style={"textAlign": "left"}),
-                        html.H6("Security Name:", style={"textAlign": "left"}),
-                        html.H6("Closing Price:", style={"textAlign": "left"}),
-                        make_empty_line(1),
-                    ],
                     id="individual-stock-info",
                 ),
                 dbc.Row(
@@ -644,10 +636,89 @@ def content_tab_five():
     ]
 
 
+def tab_industry_leading():
+    return [
+        dbc.Container(
+            [
+                dbc.Row(
+                    [
+                        make_empty_line(1),
+                        dbc.Col(
+                            [
+                                dcc.Dropdown(
+                                    id="dropdown-date-industry-leading",
+                                    options=HOLDING_DATES,
+                                    value=INIT_DATE,
+                                    placeholder="Select Date",
+                                    style={"textAlign": "left"},
+                                ),
+                            ]
+                        ),
+                        dbc.Col(),
+                        dbc.Col(),
+                    ],
+                    style={"width": "70%", "display": "flex"},
+                ),
+                dbc.Row(
+                    [
+                        html.Div(
+                            dcc.Graph(
+                                id="treemap-industry-leading",
+                                style={"width": "70vw", "height": "70vh"},
+                            )
+                        )
+                    ],
+                    className="mb-4",
+                ),
+            ],
+            fluid=True,
+        )
+    ]
+
+
+def tab_holding_of_etf():
+    return [
+        dbc.Container(
+            [
+                dbc.Row(
+                    [
+                        make_empty_line(1),
+                        dbc.Col(
+                            [
+                                dcc.Dropdown(
+                                    id="dropdown-date-holding-of-etf",
+                                    options=HOLDING_DATES,
+                                    value=INIT_DATE,
+                                    placeholder="Select Date",
+                                    style={"textAlign": "left"},
+                                ),
+                            ]
+                        ),
+                        dbc.Col(),
+                        dbc.Col(),
+                    ],
+                    style={"width": "70%", "display": "flex"},
+                ),
+                dbc.Row(
+                    [
+                        html.Div(
+                            dcc.Graph(
+                                id="scatter-holding-of-etf",
+                                style={"width": "60vw", "height": "50vh"},
+                            )
+                        )
+                    ],
+                    className="mb-4",
+                ),
+            ],
+            fluid=True,
+        )
+    ]
+
+
 def create_layout_container():
     return dbc.Container(
         [
-            # Part_01: topic
             dbc.Row(
                 [
                     dbc.Col(
@@ -659,42 +730,38 @@ def create_layout_container():
                     )
                 ]
             ),
-            # Part_02: tabs
             dbc.Row(
                 [
-                    # Tabs
                     dbc.Tabs(
                         style={"font-size": "110%"},
                         children=[
-                            # Tab one
                             dbc.Tab(
                                 label="Introduction",
-                                tab_id="tab-1",
-                                children=content_tab_one(),
+                                children=tab_introduction(),
                             ),
-                            # Tab one
                             dbc.Tab(
                                 label="Overiew",
-                                tab_id="tab-2",
-                                children=content_tab_two(),
+                                children=tab_overview(),
                             ),
-                            # Tab three
+                            dbc.Tab(
+                                label="Industry Leading",
+                                children=tab_industry_leading(),
+                            ),
+                            dbc.Tab(
+                                label="Holding(%) of ETF",
+                                children=tab_holding_of_etf(),
+                            ),
                             dbc.Tab(
                                 label="Top 30 Stocks",
-                                tab_id="tab-3",
-                                children=content_tab_three(),
+                                children=tab_top_30_stocks(),
                             ),
-                            # Tab four
                             dbc.Tab(
                                 label="Trend",
-                                tab_id="tab-4",
-                                children=content_tab_four(),
+                                children=tab_trend(),
                             ),
-                            # Tab five
                             dbc.Tab(
                                 label="Individual Stocks",
-                                tab_id="tab-5",
-                                children=content_tab_five(),
+                                children=tab_individual_stocks(),
                             ),
                         ],
                     )
