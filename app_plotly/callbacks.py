@@ -211,7 +211,7 @@ def init_callbacks(app):
         )
         fig.update_layout(
             title={
-                "text": f"Industry Leaders by Market Value -  {selected_date}",
+                "text": f"Distribution by Industry by Market Value of ETFs Holding -  {selected_date}",
                 "xanchor": "center",
                 "x": 0.5,
             }

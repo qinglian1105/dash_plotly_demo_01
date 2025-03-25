@@ -744,7 +744,7 @@ def create_layout_container():
                                 children=tab_overview(),
                             ),
                             dbc.Tab(
-                                label="Industry Leading",
+                                label="Distribution by Industry",
                                 children=tab_industry_leading(),
                             ),
                             dbc.Tab(

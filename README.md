@@ -22,7 +22,7 @@ __1. The main components of this website__ <br>
 There are seven tabs for this interactive plot website.<br>
 (1)Introduction: just a brief description about this study.<br>
 (2)Overview: a dashboard with metrics, charts, and table.<br>
-(3)Industry Leading: industry leaders in a treemap chart.<br>
+(3)Distribution by Industry: industry leaders by market value of ETFs in a treemap chart.<br>
 (4)Holding(%) of ETF: a scatter plot with top holding-percentage stocks<br>
 (5)Top 30 Stocks: choose date and ETF code to view top 30 stocks of its portfolio.<br>
 (6)Trend: line charts for ETF historical prices and for stock holding amount and percentage of both selected ETF and stock code.<br>
@@ -66,7 +66,7 @@ __4. Results__ <br>
 ![avatar](./README_png/png_overview.png)
 <br><br>
 
-(3)Industry Leading: a treemap chart indicates leaders of their industries by market value of top ETFs holding.<br>
+(3)Distribution by Industry: a treemap chart indicates the distribution by industry based on market value of top ETFs holding. Please note that this is not a true ranking of industries. <br>
 
 ![avatar](./README_png/png_industry_leading.png)
 <br><br>
@@ -77,7 +77,7 @@ __4. Results__ <br>
 ![avatar](./README_png/png_holding_of_etf.png)
 <br><br>
 
-In addition, you can click on a stock in the chart legend, such as 2330, to temporarily not display it on the chart, making other stocks clearly visible.<br>
+In addition, you can click on a stock name in the chart legend, such as "台積電", to temporarily not display it on the chart, making other stocks clearly visible.<br>
 
 ![avatar](./README_png/png_holding_of_etf_no_2330.png)
 <br><br>
@@ -92,7 +92,7 @@ In addition, you can click on a stock in the chart legend, such as 2330, to temp
 ![avatar](./README_png/png_trend.png)
 <br><br>
 
-(7)Individual Stocks: show basic information and holding in ETFs after submmiting stock code in the box.<br>
+(7)Individual Stocks: show basic information and holding in ETFs after submitting stock code in the box.<br>
 
 ![avatar](./README_png/png_individual_stocks.png)
 <br><br>
