@@ -9,7 +9,7 @@ In data visualization, interactive plots can provide users with more information
 
 ### **Ⅱ. Tools**
 
-Front-End: Plotly/Dash <br> 
+Front-End: Plotly/Dash, Flask-Login <br> 
 Back-End: FastAPI, PostgreSQL <br>
 Other: Selenium, Beautiful Soup, Docker, n8n <br>
 <br>
@@ -19,14 +19,28 @@ Other: Selenium, Beautiful Soup, Docker, n8n <br>
 
 __1. The main components of this website__ <br>
 
-There are seven tabs for this interactive plot website.<br>
+This interactive plot website has side-menu with five options. Only 3 options will be explained.<br>
+
+__● Option - Financial Info (ETF)__<br>
+
+There are 8 tabs for this option.<br>
 (1)Introduction: just a brief description about this study.<br>
 (2)Overview: a dashboard with metrics, charts, and table.<br>
 (3)Distribution by Industry: industry leaders by market value of ETFs in a treemap chart.<br>
 (4)Holding(%) of ETF: a scatter plot with top holding-percentage stocks<br>
 (5)Top 30 Stocks: choose date and ETF code to view top 30 stocks of its portfolio.<br>
-(6)Trend: line charts for ETF historical prices and for stock holding amount and percentage of both selected ETF and stock code.<br>
-(7)Individual Stocks: show basic information and holding in ETFs of selected stock.<br>
+(6)Trend-01: line charts for ETF historical prices and for stock holding amount and percentage of both selected ETF and stock code.<br>
+(7)Trend-02: 2 subplots with line charts for stock historical prices and for ETFs holding amount after submiting options.<br>
+(8)Individual Stocks: show basic information and holding in ETFs of selected stock.<br>
+
+__● Option - Data Status (DB)__<br>
+
+Just display tables for checking whether data is inserted successfully or completely.<br>
+
+__● Option - Auth (users)__<br>
+
+It's User Management.<br>
+
 <br>
 
 
@@ -40,7 +54,7 @@ The targeted data is the holding details, like stocks, bonds and so on, of excha
 In addition, the information about ETF ranking by asset value, trading volume and so on, in Taiwan can be read on the website, Yahoo Finance (Taiwan). (Please refer to [details](<https://tw.stock.yahoo.com/tw-etf/total-assets>))<br>
 Besides, web scraping is primarily implemented by "Selenium" and "Beautiful Soup", and then data is saved into database. These tasks are built in a workflow by "n8n", as the workflow of ETF tools like Airflow or DolphineScheduler, scheduling and monitoring task execution. As you can see below.<br>
 
-![avatar](./README_png/png_n8n_workflow.png)
+![avatar](./README_png/n8n_workflow_etf_crawler.png)
 <br><br>
 
 __3. How programming works__ <br>
@@ -55,52 +69,83 @@ The data visualization platform, namely interactive plot website, is built in th
 
 __4. Results__ <br>
 
+__● Page - Login__ <br>
+
+![avatar](./README_png/page_login.png)
+<br><br>
+
+![avatar](./README_png/page_login_with_menu.png)
+<br><br>
+
+
+__● Option - Financial Info (ETF)__ <br>
+
+![avatar](./README_png/page_menu_financial.png)
+<br><br>
 
 (1)Introduction<br>
 
-![avatar](./README_png/png_introduction.png)
+![avatar](./README_png/page_financial_introduction.png)
 <br><br>
 
 (2)Overview: a date picker to choose date for metrics, charts and tables.<br>
 
-![avatar](./README_png/png_overview.png)
+![avatar](./README_png/page_financial_overview.png)
 <br><br>
 
 (3)Distribution by Industry: a treemap chart indicates the distribution by industry based on market value of top ETFs holding. Please note that this is not a true ranking of industries. <br>
 
-![avatar](./README_png/png_industry_leading.png)
+![avatar](./README_png/page_financial_industry.png)
 <br><br>
 
 
 (4)Holding(%) of ETF: a scatter plot shows top holding of every ETF with percentage.<br>
 
-![avatar](./README_png/png_holding_of_etf.png)
+![avatar](./README_png/page_financial_holding.png)
 <br><br>
 
 In addition, you can click on a stock name in the chart legend, such as "台積電", to temporarily not display it on the chart, making other stocks clearly visible.<br>
 
-![avatar](./README_png/png_holding_of_etf_no_2330.png)
+![avatar](./README_png/page_financial_holding_no_2330.png)
 <br><br>
 
 (5)Top 30 Stocks: as mentioned above.<br>
 
-![avatar](./README_png/png_top_30_stocks.png)
+![avatar](./README_png/page_financial_top30_stocks.png)
 <br><br>
 
-(6)Trend: as mentioned above.<br>
+(6)Trend-01: as mentioned above.<br>
 
-![avatar](./README_png/png_trend.png)
+![avatar](./README_png/page_financial_trend_01.png)
 <br><br>
 
-(7)Individual Stocks: show basic information and holding in ETFs after submitting stock code in the box.<br>
+(7)Trend-02: as mentioned above.<br>
 
-![avatar](./README_png/png_individual_stocks.png)
+![avatar](./README_png/page_financial_trend_02.png)
+<br><br>
+
+(8)Individual Stocks: show basic information and holding in ETFs after submitting stock code in the box.<br>
+
+![avatar](./README_png/page_financial_individual_stocks.png)
 <br><br>
 
 Besides, "More information about 'stock code'..." has a tooltip for clicking links to view more statistics or advanced analysis of that stock on the internet.<br>
 
-![avatar](./README_png/png_individual_stocks_tooltip.png)
+![avatar](./README_png/page_financial_individual_stocks_more_info.png)
 <br><br>
+
+__● Option - Data Status (DB)__ <br>
+
+![avatar](./README_png/page_menu_data_status.png)
+<br><br>
+
+__● Option - Auth (users)__ <br>
+
+Only authorized personnel can add new users, remove users, update information of users. Besides, Using 'Update' to revise the content of coloum 'Authority' can control users for accessible pages. <br>
+
+![avatar](./README_png/page_menu_auth.png)
+<br><br>
+
 
 __The above offers an interactive plot website or data visualization platform with Plotly/Dash, FastAPI and n8n for investment statistics.__ <br>
 
