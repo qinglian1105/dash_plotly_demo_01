@@ -69,81 +69,98 @@ The data visualization platform, namely interactive plot website, is built in th
 
 __4. Results__ <br>
 
-__● Page - Login__ <br>
+__● Page - Login & Logout__ <br>
 
-![avatar](./README_png/page_login.png)
+Path: /login
+![avatar](./README_png/login.png)
 <br><br>
 
-![avatar](./README_png/page_login_with_menu.png)
+Login form with side menu.
+![avatar](./README_png/login_with_menu.png)
+<br><br>
+
+The message for checking username and password. Take an example. The following is checking result for wrong password.
+![avatar](./README_png/login_checking.png)
+<br><br>
+
+Path: /logout
+![avatar](./README_png/logout.png)
 <br><br>
 
 
 __● Option - Financial Info (ETF)__ <br>
 
-![avatar](./README_png/page_menu_financial.png)
+![avatar](./README_png/financial_info_with_menu.png)
 <br><br>
 
 (1)Introduction<br>
 
-![avatar](./README_png/page_financial_introduction.png)
+![avatar](./README_png/fin_tab_introduction.png)
 <br><br>
 
 (2)Overview: a date picker to choose date for metrics, charts and tables.<br>
 
-![avatar](./README_png/page_financial_overview.png)
+![avatar](./README_png/fin_tab_overview.png)
 <br><br>
 
 (3)Distribution by Industry: a treemap chart indicates the distribution by industry based on market value of top ETFs holding. Please note that this is not a true ranking of industries. <br>
 
-![avatar](./README_png/page_financial_industry.png)
+![avatar](./README_png/fin_tab_industry.png)
 <br><br>
 
 
 (4)Holding(%) of ETF: a scatter plot shows top holding of every ETF with percentage.<br>
 
-![avatar](./README_png/page_financial_holding.png)
+![avatar](./README_png/fin_tab_holding.png)
 <br><br>
 
 In addition, you can click on a stock name in the chart legend, such as "台積電", to temporarily not display it on the chart, making other stocks clearly visible.<br>
 
-![avatar](./README_png/page_financial_holding_no_2330.png)
+![avatar](./README_png/fin_tab_holding_no_2330.png)
 <br><br>
 
 (5)Top 30 Stocks: as mentioned above.<br>
 
-![avatar](./README_png/page_financial_top30_stocks.png)
+![avatar](./README_png/fin_tab_top30_stocks.png)
 <br><br>
 
 (6)Trend-01: as mentioned above.<br>
 
-![avatar](./README_png/page_financial_trend_01.png)
+![avatar](./README_png/fin_tab_trend_01.png)
 <br><br>
 
 (7)Trend-02: as mentioned above.<br>
 
-![avatar](./README_png/page_financial_trend_02.png)
+![avatar](./README_png/fin_tab_trend_02.png)
 <br><br>
 
 (8)Individual Stocks: show basic information and holding in ETFs after submitting stock code in the box.<br>
 
-![avatar](./README_png/page_financial_individual_stocks.png)
+![avatar](./README_png/fin_tab_individual_stocks.png)
 <br><br>
 
 Besides, "More information about 'stock code'..." has a tooltip for clicking links to view more statistics or advanced analysis of that stock on the internet.<br>
 
-![avatar](./README_png/page_financial_individual_stocks_more_info.png)
+![avatar](./README_png/fin_tab_individual_stocks_tooltip.png)
 <br><br>
 
 __● Option - Data Status (DB)__ <br>
 
-![avatar](./README_png/page_menu_data_status.png)
+Display the status, including record counts and lastest records, in main tables of database, invest. <br>
+
+![avatar](./README_png/data_status_with_menu.png)
 <br><br>
 
 __● Option - Auth (users)__ <br>
 
-Only authorized personnel can add new users, remove users, update information of users. Besides, Using 'Update' to revise the content of coloum 'Authority' can control users for accessible pages. <br>
+This is user management. Only authorized personnel can add new users, remove users, update information of users. Besides, Using 'Update' to revise the content of coloum 'Authority' can control users for accessible pages. <br>
 
-![avatar](./README_png/page_menu_auth.png)
+![avatar](./README_png/auth_with_menu.png)
+<br><br>
+
+Take an example. The upper right corner shows that login user is stuff, so he or she cannot access unauthorized pages.  <br>
+
+![avatar](./README_png/auth_accessible.png)
 <br><br>
 
 
@@ -163,7 +180,11 @@ __The above offers an interactive plot website or data visualization platform wi
 
 [4] [n8n](<https://n8n.io/>)
 
-[5] [Yahoo Finance(Taiwan) - ETF asset ranking](<https://tw.stock.yahoo.com/tw-etf/total-assets>)
+[5] [Google Fonts](<https://fonts.google.com/>)
 
-[6] [Pocket Securities - ETF](<https://www.pocket.tw/etf/>)
+[6] [Flask-Login Documentation](<https://flask-login.readthedocs.io/en/latest/>)
+
+[7] [Yahoo Finance(Taiwan) - ETF asset ranking](<https://tw.stock.yahoo.com/tw-etf/total-assets>)
+
+[8] [Pocket Securities - ETF](<https://www.pocket.tw/etf/>)
 
