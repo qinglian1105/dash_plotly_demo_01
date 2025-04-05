@@ -71,24 +71,32 @@ __4. Results__ <br>
 
 __● Page - Login & Logout__ <br>
 
-Path: /login
+Path: /login<br>
+(the background picture is created by Gemini)<br>
+
 ![avatar](./README_png/login.png)
 <br><br>
 
-Login form with side menu.
+Login form with side menu.<br>
+
 ![avatar](./README_png/login_with_menu.png)
 <br><br>
 
-The message for checking username and password. Take an example. The following is checking result for wrong password.
+The message for checking username and password. Take an example. The following is checking result for wrong password.<br>
+
 ![avatar](./README_png/login_checking.png)
 <br><br>
 
-Path: /logout
+Path: /logout<br>
+
 ![avatar](./README_png/logout.png)
 <br><br>
 
 
 __● Option - Financial Info (ETF)__ <br>
+
+
+As mentioned above, this option is the statistics of top equity ETFs in Taiwan.<br>
 
 ![avatar](./README_png/financial_info_with_menu.png)
 <br><br>
@@ -158,7 +166,7 @@ This is user management. Only authorized personnel can add new users, remove use
 ![avatar](./README_png/auth_with_menu.png)
 <br><br>
 
-Take an example. The upper right corner shows that login user is stuff, so he or she cannot access unauthorized pages.  <br>
+Take an example. The upper right corner of the picture below shows that login user is stuff, so he or she cannot access unauthorized pages.  <br>
 
 ![avatar](./README_png/auth_accessible.png)
 <br><br>

@@ -30,3 +30,5 @@ db.sqlite3-journal
 # Ignore folders of this project
 clean_docker.py
 /app_plotly/wait-for-it.sh
+/app_plotly/initialize/configuration.py
+/app_fastapi/initialize/configuration.py
