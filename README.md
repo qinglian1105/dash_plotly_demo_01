@@ -82,9 +82,14 @@ Login form with side menu.<br>
 ![avatar](./README_png/login_with_menu.png)
 <br><br>
 
-The message for checking username and password. Take an example. The following is checking result for wrong password.<br>
+The message after submitting is wrong password.<br>
 
-![avatar](./README_png/login_checking.png)
+![avatar](./README_png/login_check_password.png)
+<br><br>
+
+The message below indicates incorrect username.<br>
+
+![avatar](./README_png/login_check_username.png)
 <br><br>
 
 Path: /logout<br>
@@ -166,7 +171,7 @@ This is user management. Only authorized personnel can add new users, remove use
 ![avatar](./README_png/auth_with_menu.png)
 <br><br>
 
-Take an example. The upper right corner of the picture below shows that login user is stuff, so he or she cannot access unauthorized pages.  <br>
+Take an example. The upper right corner of the picture below shows that login user is stuff, so he or she cannot access unauthorized pages according to the setting of column "Authority" in table - users.  <br>
 
 ![avatar](./README_png/auth_accessible.png)
 <br><br>

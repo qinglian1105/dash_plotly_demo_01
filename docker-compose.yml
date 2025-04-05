@@ -21,4 +21,15 @@ services:
         ports:
             - "8080:8050" 
         depends_on:
-            - backend-fastapi                           
+            - backend-fastapi  
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile_ngnix
+        container_name: nginx_plotly
+        image: nginx:alpine
+        ports:
+            - "80:80"
+        depends_on:
+            - frontend-plotly     
+        
